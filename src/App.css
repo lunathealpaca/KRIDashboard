@@ -211,3 +211,8 @@
   color: #444444; /* Adjust the font color as needed */
 }
 
+.tableau-container {
+  transform: scale(0.75); 
+  transform-origin: top left; 
+}
+
