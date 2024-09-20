@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect } from "react";
 
 function TableauViz() {
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+    const script = document.createElement("script");
+    script.src = "https://public.tableau.com/javascripts/api/viz_v1.js";
     script.async = true;
     document.body.appendChild(script);
 
@@ -17,7 +16,7 @@ function TableauViz() {
     <div
       className="tableauPlaceholder"
       id="vizContainer"
-      style={{ position: 'relative', width: '1000px', height: '840px' }}
+      style={{ position: "relative", width: "1000px", height: "840px" }}
     >
       <object className="tableauViz" width="100%" height="100%">
         <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F" />

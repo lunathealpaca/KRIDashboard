@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Any Name",
+    "kriItem": "Any Item",
+    "comment": "This is a comment",
+    "team": "Group 1",
+    "ticketNumber": "Ticket12345",
+    "timestamp": "2024-09-17T03:38:03.638Z",
+    "manualTimestamp": "2024-09-01T04:01:00.000Z"
+  },
+  {
+    "name": "Any Name 2",
+    "kriItem": "Any Item 2",
+    "comment": "This is a comment 2",
+    "team": "Group 2",
+    "ticketNumber": "Ticket12345",
+    "timestamp": "2024-09-17T03:40:11.939Z",
+    "manualTimestamp": "2024-09-01T04:01:00.000Z"
+  }
+]

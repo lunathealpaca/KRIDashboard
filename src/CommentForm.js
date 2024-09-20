@@ -1,85 +1,112 @@
-import React, { useState } from 'react';
-import { Form, Button, Dropdown, DropdownButton, InputGroup } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import "./CommentForm.css";
 
-export default function CommentForm({
-  userName,
-  setUserName,
-  showNameInput,
-  setShowNameInput,
-  names,
-  userNameInputRef,
-  onSend
-}) {
-  const [inputValue, setInputValue] = useState("");
+export default function CommentForm({ onSubmit }) {
+  const [name, setName] = useState("");
+  const [kriItem, setKriItem] = useState("");
+  const [comment, setComment] = useState("");
+  const [team, setTeam] = useState("");
+  const [ticketNumber, setTicketNumber] = useState("");
+  const [timestamp, setTimestamp] = useState("");
+  const [showError, setShowError] = useState(false);
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+  const convertLocalToUTC = (localTimestamp) => {
+    const localDate = new Date(localTimestamp);
+    return localDate.toISOString();
   };
 
-  const handleSend = () => {
-    if (inputValue.trim() !== "" && userName.trim() !== "" && userName !== "Any User") {
-      const newComment = {
-        title: inputValue,
-        date: new Date(),
-        text: "",
-        user: userName
+  const handleSubmit = () => {
+    if (name && kriItem && comment) {
+      const commentData = {
+        name,
+        kriItem,
+        comment,
+        team,
+        ticketNumber,
+        timestamp: new Date().toISOString(),
+        manualTimestamp: timestamp ? convertLocalToUTC(timestamp) : null,
       };
-      onSend(newComment);
-      setInputValue("");
-      setUserName("");
-      setShowNameInput(false);
+      onSubmit(commentData);
+      setShowError(false);
+    } else {
+      setShowError(true);
     }
   };
 
   return (
     <div className="input-container">
-      <Form.Group controlId="formUserNameInput">
-        {showNameInput ? (
-          <Form.Control
-            ref={userNameInputRef}
-            className="user-name-input"
-            type="text"
-            placeholder="Enter Your Name or Organization"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            onBlur={() => setShowNameInput(false)}
-            style={{ marginBottom: '10px' }}
-          />
-        ) : (
-          <DropdownButton
-            className="custom-dropdown"
-            title={userName || "Select"}
-            onSelect={(e) => {
-              if (e === "addNew") {
-                setShowNameInput(true);
-                setUserName("");
-                setTimeout(() => {
-                  userNameInputRef.current?.focus();
-                }, 0);
-              } else {
-                setUserName(e);
-              }
-            }}
-          >
-            {names.map((name, index) => (
-              name !== "Any User" && (
-                <Dropdown.Item key={index} eventKey={name}>
-                  {name}
-                </Dropdown.Item>
-              )
-            ))}
-            <Dropdown.Item eventKey="addNew">+ New User</Dropdown.Item>
-          </DropdownButton>
-        )}
+      {showError && (
+        <Alert variant="danger">Please fill in all mandatory fields.</Alert>
+      )}
+      <Form.Group controlId="formNameInput">
+        <Form.Label>Name *</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Your Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="custom-input"
+        />
       </Form.Group>
-      <Form.Group controlId="formBasicInput" style={{ marginTop: '10px' }}>
-        <InputGroup>
-          <Form.Control as="textarea" className="comment-input" placeholder="Add your comment" value={inputValue} onChange={handleInputChange} />
-          <Button variant="outline-secondary" id="button-addon2" onClick={handleSend} className="custom-button">
-            Add
-          </Button>
-        </InputGroup>
+      <Form.Group controlId="formKriItemInput">
+        <Form.Label>KRI Item *</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter KRI Item"
+          value={kriItem}
+          onChange={(e) => setKriItem(e.target.value)}
+          className="custom-input"
+        />
       </Form.Group>
+      <Form.Group controlId="formCommentInput">
+        <Form.Label>Comment *</Form.Label>
+        <Form.Control
+          as="textarea"
+          placeholder="Add your comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="custom-input"
+        />
+      </Form.Group>
+      <Form.Group controlId="formTeamInput">
+        <Form.Label>Team/Business Group</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Team/Business Group"
+          value={team}
+          onChange={(e) => setTeam(e.target.value)}
+          className="custom-input"
+        />
+      </Form.Group>
+      <Form.Group controlId="formTicketNumberInput">
+        <Form.Label>Ticket Number</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter Ticket Number"
+          value={ticketNumber}
+          onChange={(e) => setTicketNumber(e.target.value)}
+          className="custom-input"
+        />
+      </Form.Group>
+      <Form.Group controlId="formTimestampInput">
+        <Form.Label>
+          If you are commenting on another time period, please specify
+        </Form.Label>
+        <Form.Control
+          type="datetime-local"
+          value={timestamp}
+          onChange={(e) => setTimestamp(e.target.value)}
+          className="custom-input"
+        />
+      </Form.Group>
+      <Button
+        variant="primary"
+        onClick={handleSubmit}
+        className="submit-button"
+      >
+        Submit
+      </Button>
     </div>
   );
 }
